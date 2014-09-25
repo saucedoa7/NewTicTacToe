@@ -10,4 +10,6 @@
 
 @interface ViewController : UIViewController
 
+-(void)findLabelUsingPoint: (CGPoint)point;
+
 @end

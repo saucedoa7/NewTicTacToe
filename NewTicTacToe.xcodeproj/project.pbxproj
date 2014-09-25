@@ -112,8 +112,6 @@
 		50FDFB9C19D3BB790081A41D /* NewTicTacToe */ = {
 			isa = PBXGroup;
 			children = (
-				50FDFBA519D3BB790081A41D /* AppDelegate.h */,
-				50FDFBA619D3BB790081A41D /* AppDelegate.m */,
 				50FDFBA819D3BB790081A41D /* Main.storyboard */,
 				50FDFBAB19D3BB790081A41D /* ViewController.h */,
 				50FDFBAC19D3BB790081A41D /* ViewController.m */,
@@ -126,6 +124,8 @@
 		50FDFB9D19D3BB790081A41D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				50FDFBA519D3BB790081A41D /* AppDelegate.h */,
+				50FDFBA619D3BB790081A41D /* AppDelegate.m */,
 				50FDFB9E19D3BB790081A41D /* NewTicTacToe-Info.plist */,
 				50FDFB9F19D3BB790081A41D /* InfoPlist.strings */,
 				50FDFBA219D3BB790081A41D /* main.m */,
