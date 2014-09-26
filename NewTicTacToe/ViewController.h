@@ -10,5 +10,25 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *labelOne;
+@property (weak, nonatomic) IBOutlet UILabel *labelTwo;
+@property (weak, nonatomic) IBOutlet UILabel *labelThree;
+@property (weak, nonatomic) IBOutlet UILabel *labelFour;
+@property (weak, nonatomic) IBOutlet UILabel *labelFive;
+@property (weak, nonatomic) IBOutlet UILabel *labelSix;
+@property (weak, nonatomic) IBOutlet UILabel *labelSeven;
+@property (weak, nonatomic) IBOutlet UILabel *labelEight;
+@property (weak, nonatomic) IBOutlet UILabel *labelNine;
+@property (weak, nonatomic) IBOutlet UILabel *whichPlayer;
+@property (weak, nonatomic) IBOutlet UILabel *draggedTileLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property NSTimer *timer;
+@property int remainingTicks;
+@property NSMutableArray *labels;
+
+-(IBAction)doCountDown:(UILabel *)sender;
+-(void)handelTimerTick;
+-(void)updateLabel;
+
 -(IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point;
 @end
