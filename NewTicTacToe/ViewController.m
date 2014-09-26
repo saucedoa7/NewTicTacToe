@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *labelOne;
 @property (weak, nonatomic) IBOutlet UILabel *labelTwo;
 @property (weak, nonatomic) IBOutlet UILabel *labelThree;
@@ -60,7 +61,20 @@
 
         if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
             self.labelOne.text = @"X";
+            self.labelOne.textColor =  [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1];
+        } else {
+            self.labelOne.text = @"O";
+            self.labelOne.textColor = [UIColor colorWithRed:0.9 green:0.32 blue:0.32 alpha:1];
         }
+    }
+
+    if ([self.labelOne isEqual:@"X"]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"New Game"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
     }
 }
 @end
