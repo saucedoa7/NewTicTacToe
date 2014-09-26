@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelEight;
 @property (weak, nonatomic) IBOutlet UILabel *labelNine;
 @property (weak, nonatomic) IBOutlet UILabel *whichPlayer;
+@property (weak, nonatomic) IBOutlet UILabel *draggedTileLabel;
+@property NSMutableArray *labels;
 
 @end
 
@@ -27,12 +29,38 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    NSString *playerTurn;
+    int intTurn = arc4random()%2;
+
+    if (intTurn == 1) {
+        playerTurn = @"X";
+    } else {
+        playerTurn = @"O";
+    }
+
+    if ([playerTurn isEqualToString:@"X"]) {
+        self.draggedTileLabel.text = @"O";
+    } else {
+        self.draggedTileLabel.text = @"X";
+    }
 }
 
--(void)findLabelUsingPoint:(CGPoint)point{
-    
+- (IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point {
+
+    point = [panGestureRec translationInView:self.view];
+
+    self.draggedTileLabel.transform = CGAffineTransformMakeTranslation(point.x, point.y);
+    NSLog(@"x= %.0f, y=%.0f", self.draggedTileLabel.center.x, self.draggedTileLabel.center.y);
+
+    point.x = point.x + self.draggedTileLabel.center.x;
+    point.y += self.draggedTileLabel.center.y;
+
+    if (CGRectContainsPoint(self.labelOne.frame, point)) {
+
+        if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
+            self.labelOne.text = @"X";
+        }
+    }
 }
-
-
 @end

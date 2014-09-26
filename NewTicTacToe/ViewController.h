@@ -10,6 +10,5 @@
 
 @interface ViewController : UIViewController
 
--(void)findLabelUsingPoint: (CGPoint)point;
-
+-(IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point;
 @end
