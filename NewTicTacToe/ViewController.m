@@ -17,7 +17,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self updateLabel];
     NSString *playerTurn;
     int intTurn = arc4random()%2;
 
@@ -32,35 +31,23 @@
     } else {
         self.draggedTileLabel.text = @"X";
     }
-}
+    self.remainingTicks = 10;
 
--(void)doCountDown:(id)sender{
-    if (self.timer) {
-        return;
-
-        self.remainingTicks = 10;
-        [self updateLabel];
-
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.0
-                                                      target:self
-                                                    selector:@selector(handelTimerTick)
-                                                    userInfo:nil
-                                                     repeats:YES];
-    }
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                  target:self
+                                                selector:@selector(handelTimerTick)
+                                                userInfo:nil
+                                                 repeats:YES];
 }
 
 -(void)handelTimerTick{
     self.remainingTicks--;
-    [self updateLabel];
+    NSString *timeString = [[NSString alloc] initWithFormat:@"%d", self.remainingTicks];
+    self.timerLabel.text = timeString;
 
-    if (self.remainingTicks <= 0) {
-        [self.timer invalidate];
-        self.timer = nil;
+    if (self.remainingTicks == 1) {
+        self.remainingTicks = 10;
     }
-}
-
--(void)updateLabel{
-    self.timerLabel.text = [[NSNumber numberWithInt:self.remainingTicks] stringValue];
 }
 
 - (IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point {
@@ -70,8 +57,6 @@
     self.draggedTileLabel.transform = CGAffineTransformMakeTranslation(point.x, point.y);
     point.x = point.x + self.draggedTileLabel.center.x;
     point.y += self.draggedTileLabel.center.y;
-
-
 }
 
 //if (CGRectContainsPoint(self.labelOne.frame, point)) {
