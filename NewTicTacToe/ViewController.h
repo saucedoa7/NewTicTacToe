@@ -22,14 +22,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *whichPlayer;
 @property (weak, nonatomic) IBOutlet UILabel *draggedTileLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+
 @property NSString *playerTurn;
 @property NSTimer *timer;
 @property int remainingTicks;
-@property NSMutableArray *labels;
 
--(IBAction)doCountDown:(UILabel *)sender;
--(void)handelTimerTick;
--(void)updateLabel;
+@property int remainingCountTicks;
+@property (weak, nonatomic) IBOutlet UILabel *countDownLabel;
+@property NSTimer *countDownTimerTick;
+
 
 -(IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point;
 @end
