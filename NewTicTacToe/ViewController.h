@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *whichPlayer;
 @property (weak, nonatomic) IBOutlet UILabel *draggedTileLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property NSString *playerTurn;
 @property NSTimer *timer;
 @property int remainingTicks;
 @property NSMutableArray *labels;

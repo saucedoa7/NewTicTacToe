@@ -17,36 +17,40 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSString *playerTurn;
+
     int intTurn = arc4random()%2;
 
     if (intTurn == 1) {
-        playerTurn = @"X";
-    } else {
-        playerTurn = @"O";
-    }
-
-    if ([playerTurn isEqualToString:@"X"]) {
-        self.draggedTileLabel.text = @"O";
-    } else {
         self.draggedTileLabel.text = @"X";
+    } else {
+        self.draggedTileLabel.text = @"O";
     }
-    self.remainingTicks = 10;
 
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+
+    self.remainingTicks = 5;
+
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.8
                                                   target:self
                                                 selector:@selector(handelTimerTick)
                                                 userInfo:nil
                                                  repeats:YES];
+
 }
+
+
 
 -(void)handelTimerTick{
     self.remainingTicks--;
-    NSString *timeString = [[NSString alloc] initWithFormat:@"%d", self.remainingTicks];
+    NSString *timeString = [[NSString alloc] initWithFormat:@":0%d", self.remainingTicks];
     self.timerLabel.text = timeString;
 
-    if (self.remainingTicks == 1) {
-        self.remainingTicks = 10;
+    if (self.remainingTicks == 0) {
+        self.remainingTicks = 5;
+        if ([self.draggedTileLabel.text isEqualToString:@"X"]) {
+            self.draggedTileLabel.text = @"O";
+        } else {
+            self.draggedTileLabel.text = @"X";
+        }
     }
 }
 
