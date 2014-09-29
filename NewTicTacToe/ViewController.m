@@ -28,6 +28,8 @@
     }
 
     [self countDownTimers];
+    self.draggedTileLabel.hidden = YES;
+
 }
 
 -(void)handelCountdownTimerTick{
@@ -43,8 +45,9 @@
     }else if (self.remainingCountTicks == 2){
         self.countDownLabel.text = @"Set";
     } else if (self.remainingCountTicks == 1){
-        self.countDownLabel.text = @"GO!";
+        self.countDownLabel.text = @"Go!";
     } else {
+        self.draggedTileLabel.hidden = NO;
         self.countDownLabel.hidden = YES;
     }
 }
@@ -57,6 +60,12 @@
 
     if (self.remainingTicks == 0) {
         self.remainingTicks = 5;
+
+        CGRect resetDraggingLabel = [self.draggedTileLabel frame];
+        resetDraggingLabel.origin.y = 416;
+        resetDraggingLabel.origin.x = 125;
+        self.draggedTileLabel.frame = resetDraggingLabel;
+
         if ([self.draggedTileLabel.text isEqualToString:@"X"]) {
             self.draggedTileLabel.text = @"O";
             self.draggedTileLabel.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
@@ -67,17 +76,16 @@
     }
 }
 
-
 - (void)countDownTimers
 {
     self.remainingTicks = 5;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:.8
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:.75
                                                   target:self
                                                 selector:@selector(handelTimerTick)
                                                 userInfo:nil
                                                  repeats:YES];
     self.remainingCountTicks = 5;
-    self.countDownTimerTick = [NSTimer scheduledTimerWithTimeInterval:.8
+    self.countDownTimerTick = [NSTimer scheduledTimerWithTimeInterval:.75
                                                                target:self
                                                              selector:@selector(handelCountdownTimerTick)
                                                              userInfo:nil
@@ -93,28 +101,25 @@
     self.draggedTileLabel.center = CGPointMake(self.draggedTileLabel.center.x + point.x, self.draggedTileLabel.center.y + point.y);
     [panGestureRec setTranslation:CGPointZero inView:self.draggedTileLabel];
 
-    if (CGRectContainsPoint(self.labelOne.frame, point)) {
+    if (CGRectContainsPoint(self.labelEight.frame, point)) {
 
         if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
-            self.labelOne.text = @"X";
-            self.labelOne.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+            self.labelEight.text = @"X";
+            self.labelEight.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
         } else {
-            self.labelOne.text = @"O";
-            self.labelOne.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+            self.labelEight.text = @"O";
+            self.labelEight.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
         }
-        if ([self.labelOne.text isEqualToString:@"X"]){
+        if ([self.labelEight.text isEqualToString:@"X"]){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
                                                             message:nil
                                                            delegate:self
                                                   cancelButtonTitle:@"New Game"
                                                   otherButtonTitles:nil, nil];
             [alert show];
-
+            
             [self.timer invalidate];
         }
     }
 }
-
-
-
 @end
