@@ -52,19 +52,68 @@
     }
 }
 
-
 -(void)handelTimerTick{
     self.remainingTicks--;
     NSString *timeString = [[NSString alloc] initWithFormat:@":0%d", self.remainingTicks];
     self.timerLabel.text = timeString;
 
+    [self switchPlayer];
+}
+
+- (IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point {
+
+    if(panGestureRec.state == UIGestureRecognizerStateEnded)
+    {
+        NSLog(@"Finger is off");
+        [self resetDraggingLabel];
+        [self countDownTimers];
+        [self switchPlayer];
+        [self.timer invalidate];
+
+        if (CGRectContainsPoint(self.labelEight.frame, point)) {
+
+            if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
+                self.labelEight.text = @"X";
+                self.labelEight.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+            } else {
+                self.labelEight.text = @"O";
+                self.labelEight.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+            }
+            if ([self.labelEight.text isEqualToString:@"X"]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
+                                                                message:nil
+                                                               delegate:self
+                                                      cancelButtonTitle:@"New Game"
+                                                      otherButtonTitles:nil, nil];
+                [alert show];
+                
+                [self.timer invalidate];
+            }
+        }
+    }
+    
+    self.draggedTileLabel = (UILabel *)panGestureRec.view;
+    
+    point = [panGestureRec translationInView:self.draggedTileLabel];
+    
+    self.draggedTileLabel.center = CGPointMake(self.draggedTileLabel.center.x + point.x, self.draggedTileLabel.center.y + point.y);
+    [panGestureRec setTranslation:CGPointZero inView:self.draggedTileLabel];
+}
+
+#pragma mark Helper Methods
+
+- (void)resetDraggingLabel {
+    CGRect resetDraggingLabel = [self.draggedTileLabel frame];
+    resetDraggingLabel.origin.y = 416;
+    resetDraggingLabel.origin.x = 125;
+    self.draggedTileLabel.frame = resetDraggingLabel;
+}
+
+- (void)switchPlayer {
     if (self.remainingTicks == 0) {
         self.remainingTicks = 5;
 
-        CGRect resetDraggingLabel = [self.draggedTileLabel frame];
-        resetDraggingLabel.origin.y = 416;
-        resetDraggingLabel.origin.x = 125;
-        self.draggedTileLabel.frame = resetDraggingLabel;
+        [self resetDraggingLabel];
 
         if ([self.draggedTileLabel.text isEqualToString:@"X"]) {
             self.draggedTileLabel.text = @"O";
@@ -92,34 +141,4 @@
                                                               repeats:YES];
 }
 
-- (IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point {
-
-    self.draggedTileLabel = (UILabel *)panGestureRec.view;
-
-    point = [panGestureRec translationInView:self.draggedTileLabel];
-
-    self.draggedTileLabel.center = CGPointMake(self.draggedTileLabel.center.x + point.x, self.draggedTileLabel.center.y + point.y);
-    [panGestureRec setTranslation:CGPointZero inView:self.draggedTileLabel];
-
-    if (CGRectContainsPoint(self.labelEight.frame, point)) {
-
-        if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
-            self.labelEight.text = @"X";
-            self.labelEight.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
-        } else {
-            self.labelEight.text = @"O";
-            self.labelEight.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
-        }
-        if ([self.labelEight.text isEqualToString:@"X"]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
-                                                            message:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:@"New Game"
-                                                  otherButtonTitles:nil, nil];
-            [alert show];
-            
-            [self.timer invalidate];
-        }
-    }
-}
 @end
