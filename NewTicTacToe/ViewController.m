@@ -28,7 +28,6 @@
     }
 
     [self countDownTimers];
-    
 }
 
 -(void)handelCountdownTimerTick{
@@ -72,13 +71,13 @@
 - (void)countDownTimers
 {
     self.remainingTicks = 5;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:.7
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:.8
                                                   target:self
                                                 selector:@selector(handelTimerTick)
                                                 userInfo:nil
                                                  repeats:YES];
     self.remainingCountTicks = 5;
-    self.countDownTimerTick = [NSTimer scheduledTimerWithTimeInterval:.7
+    self.countDownTimerTick = [NSTimer scheduledTimerWithTimeInterval:.8
                                                                target:self
                                                              selector:@selector(handelCountdownTimerTick)
                                                              userInfo:nil
@@ -87,12 +86,12 @@
 
 - (IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point {
 
-    point = [panGestureRec translationInView:self.view];
+    self.draggedTileLabel = (UILabel *)panGestureRec.view;
 
-    self.draggedTileLabel.transform = CGAffineTransformMakeTranslation(point.x, point.y);
-    point.x = point.x + self.draggedTileLabel.center.x;
-    point.y += self.draggedTileLabel.center.y;
+    point = [panGestureRec translationInView:self.draggedTileLabel];
 
+    self.draggedTileLabel.center = CGPointMake(self.draggedTileLabel.center.x + point.x, self.draggedTileLabel.center.y + point.y);
+    [panGestureRec setTranslation:CGPointZero inView:self.draggedTileLabel];
 
     if (CGRectContainsPoint(self.labelOne.frame, point)) {
 
@@ -103,15 +102,16 @@
             self.labelOne.text = @"O";
             self.labelOne.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
         }
-    }
+        if ([self.labelOne.text isEqualToString:@"X"]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
+                                                            message:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:@"New Game"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
 
-    if ([self.labelOne isEqual:@"X"]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"New Game"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+            [self.timer invalidate];
+        }
     }
 }
 
