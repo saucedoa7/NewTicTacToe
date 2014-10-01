@@ -29,37 +29,6 @@
     self.draggedTileLabel.hidden = YES;
 }
 
--(void)handelCountdownTimerTick{
-
-    self.remainingCountTicks--;
-
-    if (self.remainingCountTicks == 5) {
-        self.countDownLabel.text = @"Ready";
-    } else if (self.remainingCountTicks == 4){
-        self.countDownLabel.text = @"Ready.";
-    } else if (self.remainingCountTicks == 3){
-        self.countDownLabel.text = @"Ready..";
-    }else if (self.remainingCountTicks == 2){
-        self.countDownLabel.text = @"Set";
-    } else if (self.remainingCountTicks == 1){
-        self.countDownLabel.text = @"Go!";
-    } else {
-        self.draggedTileLabel.hidden = NO;
-        self.countDownLabel.hidden = YES;
-    }
-}
-
--(void)handelTimerTick{
-    self.remainingTicks--;
-    NSString *timeString = [[NSString alloc] initWithFormat:@":0%d", self.remainingTicks];
-    self.timerLabel.text = timeString;
-
-    if (self.remainingTicks == 0) {
-        self.remainingTicks = 5;
-        [self switchPlayer];
-    }
-}
-
 - (IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point {
 
     self.draggedTileLabel = (UILabel *)panGestureRec.view;
@@ -75,8 +44,6 @@
     if(panGestureRec.state == UIGestureRecognizerStateEnded)
     {
         NSLog(@"Finger is off");
-        [self countDownTimers];
-        [self.timer invalidate];
         [self mainLabelsArray];
 
         for (UILabel *label in self.labelsArray) {
@@ -87,12 +54,28 @@
 
                 NSLog(@"Path hits frame");
 
-                if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
-                    label.text = @"X";
-                    label.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
-                } else if ([self.draggedTileLabel.text isEqualToString:@"O"]) {
-                    label.text = @"O";
-                    label.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+                if ([label.text isEqualToString:@"X"] || [label.text isEqualToString:@"O"]) {
+                    if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
+                        self.draggedTileLabel.text = @"X";
+                        self.draggedTileLabel.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+                    } else if ([self.draggedTileLabel.text isEqualToString:@"O"]) {
+                        self.draggedTileLabel.text = @"O";
+                        self.draggedTileLabel.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+                    }
+                    [self resetDraggingLabel];
+                } else {
+                    if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
+                        label.text = @"X";
+                        label.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+                    } else if ([self.draggedTileLabel.text isEqualToString:@"O"]) {
+                        label.text = @"O";
+                        label.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+                    }
+
+                    [self countDownTimers];
+                    [self.timer invalidate];
+                    [self switchPlayer];
+
                 }
                 if (([self.labelOne.text isEqualToString:@"X"] &&
                      [self.labelTwo.text isEqualToString:@"X"] &&
@@ -152,20 +135,19 @@
                     ([self.labelThree.text isEqualToString:@"O"] &&
                      [self.labelEight.text isEqualToString:@"O"] &&
                      [self.labelFive.text isEqualToString: @"O"])) {
+                        [self.timer invalidate];
+                        self.timer = nil;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player O WON!"
                                                                         message:nil
                                                                        delegate:self
                                                               cancelButtonTitle:@"New Game"
-                                                              otherButtonTitles:nil, nil];
-                        [alert show];
+                                                              otherButtonTitles:@"Done", nil];
 
-                        [self.timer invalidate];
+                        [alert show];
                     }
             }
             NSLog(@"LABELS 2 %@", label.text);
         }
-        [self resetDraggingLabel];
-        [self switchPlayer];
     }
 }
 
@@ -217,5 +199,36 @@
                                                              selector:@selector(handelCountdownTimerTick)
                                                              userInfo:nil
                                                               repeats:YES];
+}
+
+-(void)handelCountdownTimerTick{
+
+    self.remainingCountTicks--;
+
+    if (self.remainingCountTicks == 5) {
+        self.countDownLabel.text = @"Ready";
+    } else if (self.remainingCountTicks == 4){
+        self.countDownLabel.text = @"Ready.";
+    } else if (self.remainingCountTicks == 3){
+        self.countDownLabel.text = @"Ready..";
+    }else if (self.remainingCountTicks == 2){
+        self.countDownLabel.text = @"Set";
+    } else if (self.remainingCountTicks == 1){
+        self.countDownLabel.text = @"Go!";
+    } else {
+        self.draggedTileLabel.hidden = NO;
+        self.countDownLabel.hidden = YES;
+    }
+}
+
+-(void)handelTimerTick{
+    self.remainingTicks--;
+    NSString *timeString = [[NSString alloc] initWithFormat:@":0%d", self.remainingTicks];
+    self.timerLabel.text = timeString;
+    
+    if (self.remainingTicks == 0) {
+        self.remainingTicks = 5;
+        [self switchPlayer];
+    }
 }
 @end
