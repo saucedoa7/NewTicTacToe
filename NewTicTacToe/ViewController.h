@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *whichPlayer;
 @property (weak, nonatomic) IBOutlet UILabel *draggedTileLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property NSArray *labelsArray;
 
 @property NSString *playerTurn;
 @property NSTimer *timer;
@@ -33,4 +34,5 @@
 
 
 -(IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point;
+-(void)mainLabelsArray;
 @end

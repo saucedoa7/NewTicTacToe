@@ -75,37 +75,113 @@
     if(panGestureRec.state == UIGestureRecognizerStateEnded)
     {
         NSLog(@"Finger is off");
-        [self resetDraggingLabel];
         [self countDownTimers];
         [self.timer invalidate];
+        [self mainLabelsArray];
 
-        if (CGRectContainsPoint(self.labelEight.frame, point)) {
+        for (UILabel *label in self.labelsArray) {
 
-            NSLog(@"Path hits frame");
+            NSLog(@"LABELS %@", label.text);
 
-            if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
-                self.labelEight.text = @"X";
-                self.labelEight.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
-            } else {
-                self.labelEight.text = @"O";
-                self.labelEight.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+            if (CGRectContainsPoint(label.frame, point)) {
+
+                NSLog(@"Path hits frame");
+
+                if ([self.draggedTileLabel.text isEqualToString: @"X"]) {
+                    label.text = @"X";
+                    label.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+                } else if ([self.draggedTileLabel.text isEqualToString:@"O"]) {
+                    label.text = @"O";
+                    label.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
+                }
+                if (([self.labelOne.text isEqualToString:@"X"] &&
+                     [self.labelTwo.text isEqualToString:@"X"] &&
+                     [self.labelThree.text isEqualToString: @"X"]) ||
+                    ([self.labelFour.text isEqualToString:@"X"] &&
+                     [self.labelFive.text isEqualToString:@"X"] &&
+                     [self.labelSix.text isEqualToString: @"X"]) ||
+                    ([self.labelSeven.text isEqualToString:@"X"] &&
+                     [self.labelEight.text isEqualToString:@"X"] &&
+                     [self.labelNine.text isEqualToString: @"X"]) ||
+                    ([self.labelThree.text isEqualToString:@"X"] &&
+                     [self.labelSix.text isEqualToString:@"X"] &&
+                     [self.labelNine.text isEqualToString: @"X"]) ||
+                    ([self.labelOne.text isEqualToString:@"X"] &&
+                     [self.labelFour.text isEqualToString:@"X"] &&
+                     [self.labelSeven.text isEqualToString: @"X"]) ||
+                    ([self.labelTwo.text isEqualToString:@"X"] &&
+                     [self.labelFive.text isEqualToString:@"X"] &&
+                     [self.labelEight.text isEqualToString: @"X"]) ||
+                    ([self.labelOne.text isEqualToString:@"X"] &&
+                     [self.labelFive.text isEqualToString:@"X"] &&
+                     [self.labelNine.text isEqualToString: @"X"]) ||
+                    ([self.labelThree.text isEqualToString:@"X"] &&
+                     [self.labelEight.text isEqualToString:@"X"] &&
+                     [self.labelFive.text isEqualToString: @"X"])) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
+                                                                        message:nil
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"New Game"
+                                                              otherButtonTitles:nil, nil];
+                        [alert show];
+
+                        [self.timer invalidate];
+                    }
+
+                if (([self.labelOne.text isEqualToString:@"O"] &&
+                     [self.labelTwo.text isEqualToString:@"O"] &&
+                     [self.labelThree.text isEqualToString: @"O"]) ||
+                    ([self.labelFour.text isEqualToString:@"O"] &&
+                     [self.labelFive.text isEqualToString:@"O"] &&
+                     [self.labelSix.text isEqualToString: @"O"]) ||
+                    ([self.labelSeven.text isEqualToString:@"O"] &&
+                     [self.labelEight.text isEqualToString:@"O"] &&
+                     [self.labelNine.text isEqualToString: @"O"]) ||
+                    ([self.labelThree.text isEqualToString:@"O"] &&
+                     [self.labelSix.text isEqualToString:@"O"] &&
+                     [self.labelNine.text isEqualToString: @"0"]) ||
+                    ([self.labelOne.text isEqualToString:@"O"] &&
+                     [self.labelFour.text isEqualToString:@"O"] &&
+                     [self.labelSeven.text isEqualToString: @"O"]) ||
+                    ([self.labelTwo.text isEqualToString:@"O"] &&
+                     [self.labelFive.text isEqualToString:@"O"] &&
+                     [self.labelEight.text isEqualToString: @"O"]) ||
+                    ([self.labelOne.text isEqualToString:@"O"] &&
+                     [self.labelFive.text isEqualToString:@"O"] &&
+                     [self.labelNine.text isEqualToString: @"O"]) ||
+                    ([self.labelThree.text isEqualToString:@"O"] &&
+                     [self.labelEight.text isEqualToString:@"O"] &&
+                     [self.labelFive.text isEqualToString: @"O"])) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player O WON!"
+                                                                        message:nil
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"New Game"
+                                                              otherButtonTitles:nil, nil];
+                        [alert show];
+
+                        [self.timer invalidate];
+                    }
             }
-            if ([self.labelEight.text isEqualToString:@"X"]){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
-                                                                message:nil
-                                                               delegate:self
-                                                      cancelButtonTitle:@"New Game"
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
-
-                [self.timer invalidate];
-            }
+            NSLog(@"LABELS 2 %@", label.text);
         }
+        [self resetDraggingLabel];
         [self switchPlayer];
     }
 }
 
 #pragma mark Helper Methods
+
+-(void)mainLabelsArray{
+    self.labelsArray = [NSArray arrayWithObjects:self.labelOne,
+                        self.labelTwo,
+                        self.labelThree,
+                        self.labelFour,
+                        self.labelFive,
+                        self.labelSix,
+                        self.labelSeven,
+                        self.labelEight,
+                        self.labelNine, nil];
+}
 
 - (void)resetDraggingLabel {
     CGRect resetDraggingLabel = [self.draggedTileLabel frame];
