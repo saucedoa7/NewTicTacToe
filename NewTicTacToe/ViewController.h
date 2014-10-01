@@ -32,6 +32,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *countDownLabel;
 @property NSTimer *countDownTimerTick;
 
+@property (weak, nonatomic) IBOutlet UILabel *xWinsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *oWinsLabel;
+@property int xWinsCounter;
+@property int oWinsCounter;
 
 -(IBAction)onDrag:(UIPanGestureRecognizer *)panGestureRec point:(CGPoint)point;
 -(void)mainLabelsArray;

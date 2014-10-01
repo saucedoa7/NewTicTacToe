@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()<UIGestureRecognizerDelegate>
+@interface ViewController ()<UIGestureRecognizerDelegate, UIAlertViewDelegate>
 @end
 
 @implementation ViewController
@@ -24,6 +24,9 @@
     } else {
         self.draggedTileLabel.text = @"O";
     }
+
+    self.xWinsCounter = 0;
+    self.oWinsCounter = 0;
 
     [self countDownTimers];
     self.draggedTileLabel.hidden = YES;
@@ -99,8 +102,13 @@
                      [self.labelFive.text isEqualToString:@"X"] &&
                      [self.labelNine.text isEqualToString: @"X"]) ||
                     ([self.labelThree.text isEqualToString:@"X"] &&
-                     [self.labelEight.text isEqualToString:@"X"] &&
-                     [self.labelFive.text isEqualToString: @"X"])) {
+                     [self.labelFive.text isEqualToString:@"X"] &&
+                     [self.labelSeven.text isEqualToString: @"X"])) {
+                        self.xWinsCounter++;
+                        self.xWinsLabel.text =[NSString stringWithFormat:@"%d",self.xWinsCounter];
+                        [self.timer invalidate];
+                        self.timer = nil;
+
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player X WON!"
                                                                         message:nil
                                                                        delegate:self
@@ -122,7 +130,7 @@
                      [self.labelNine.text isEqualToString: @"O"]) ||
                     ([self.labelThree.text isEqualToString:@"O"] &&
                      [self.labelSix.text isEqualToString:@"O"] &&
-                     [self.labelNine.text isEqualToString: @"0"]) ||
+                     [self.labelNine.text isEqualToString: @"O"]) ||
                     ([self.labelOne.text isEqualToString:@"O"] &&
                      [self.labelFour.text isEqualToString:@"O"] &&
                      [self.labelSeven.text isEqualToString: @"O"]) ||
@@ -133,20 +141,22 @@
                      [self.labelFive.text isEqualToString:@"O"] &&
                      [self.labelNine.text isEqualToString: @"O"]) ||
                     ([self.labelThree.text isEqualToString:@"O"] &&
-                     [self.labelEight.text isEqualToString:@"O"] &&
+                     [self.labelSeven.text isEqualToString:@"O"] &&
                      [self.labelFive.text isEqualToString: @"O"])) {
+                        self.oWinsCounter++;
+                        self.oWinsLabel.text =[NSString stringWithFormat:@"%d",self.oWinsCounter];
                         [self.timer invalidate];
                         self.timer = nil;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Player O WON!"
                                                                         message:nil
                                                                        delegate:self
                                                               cancelButtonTitle:@"New Game"
-                                                              otherButtonTitles:@"Done", nil];
+                                                              otherButtonTitles:nil, nil];
 
                         [alert show];
-                    }
             }
-            NSLog(@"LABELS 2 %@", label.text);
+
+            }
         }
     }
 }
@@ -229,6 +239,17 @@
     if (self.remainingTicks == 0) {
         self.remainingTicks = 5;
         [self switchPlayer];
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        for (UILabel *label in self.labelsArray) {
+            if (![label.text isEqualToString:@" "]) {
+                label.text = @" ";
+                NSLog(@"Cleared label %@", label.text);
+            }
+        }
     }
 }
 @end
