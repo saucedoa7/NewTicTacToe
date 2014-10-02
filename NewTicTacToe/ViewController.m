@@ -152,9 +152,8 @@
                                                                        delegate:self
                                                               cancelButtonTitle:@"New Game"
                                                               otherButtonTitles:nil, nil];
-
                         [alert show];
-            }
+                    }
 
             }
         }
@@ -182,6 +181,84 @@
     self.draggedTileLabel.frame = resetDraggingLabel;
 }
 
+- (void)computersTurn {
+    int placeXinLabel = arc4random()%9;
+    NSLog(@"%d", placeXinLabel);
+
+    if (placeXinLabel == 1) {
+        if ([self.labelOne.text isEqualToString:@"X"] || [self.labelOne.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }else{
+            self.labelOne.text = @"X";
+            self.labelOne.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 2) {
+        if ([self.labelTwo.text isEqualToString:@"X"] || [self.labelTwo.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }   else {
+            self.labelTwo.text = @"X";
+            self.labelTwo.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 3) {
+        if ([self.labelThree.text isEqualToString:@"X"] || [self.labelThree.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }   else {
+            self.labelThree.text = @"X";
+            self.labelThree.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 4) {
+        if ([self.labelFour.text isEqualToString:@"X"] || [self.labelFour.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }    else{
+            self.labelFour.text = @"X";
+            self.labelFour.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 5) {
+        if ([self.labelFive.text isEqualToString:@"X"] || [self.labelFive.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }else{
+            self.labelFive.text = @"X";
+            self.labelFive.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 6) {
+        if ([self.labelSix.text isEqualToString:@"X"] || [self.labelSix.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }else{
+            self.labelSix.text = @"X";
+            self.labelSix.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 7) {
+        if ([self.labelSeven.text isEqualToString:@"X"] || [self.labelSeven.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }else{
+            self.labelSeven.text = @"X";
+            self.labelSeven.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 8) {
+        if ([self.labelEight.text isEqualToString:@"X"] || [self.labelEight.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        } else{
+            self.labelEight.text = @"X";
+            self.labelEight.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+    else if (placeXinLabel == 9) {
+        if ([self.labelNine.text isEqualToString:@"X"] || [self.labelNine.text isEqualToString:@"O"]) {
+            placeXinLabel = arc4random()%9;
+        }   else{
+            self.labelNine.text = @"X";
+            self.labelNine.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+        }
+    }
+}
+
 - (void)switchPlayer {
 
     [self resetDraggingLabel];
@@ -189,9 +266,8 @@
     if ([self.draggedTileLabel.text isEqualToString:@"X"]) {
         self.draggedTileLabel.text = @"O";
         self.draggedTileLabel.textColor = [UIColor colorWithRed:0.29 green:0.4 blue:0.62 alpha:1];
-    } else {
-        self.draggedTileLabel.text = @"X";
-        self.draggedTileLabel.textColor =  [UIColor colorWithRed:1 green:0.18 blue:0.33 alpha:1];
+    } else if ([self.draggedTileLabel.text isEqualToString:@"O"]) {
+        [self computersTurn];
     }
 }
 
@@ -235,7 +311,7 @@
     self.remainingTicks--;
     NSString *timeString = [[NSString alloc] initWithFormat:@":0%d", self.remainingTicks];
     self.timerLabel.text = timeString;
-    
+
     if (self.remainingTicks == 0) {
         self.remainingTicks = 5;
         [self switchPlayer];
